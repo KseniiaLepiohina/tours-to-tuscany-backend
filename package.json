@@ -1,0 +1,14 @@
+{
+  "name": "tourstotuscany",
+  "version": "2.0.0",
+  "description": "The web site about avaliable tours to Tuscany,Italy",
+  "main": "index.js",
+  "scripts": {
+    "test": "npm run test"
+  },
+  "author": "Kseniia Liepokhina",
+  "license": "ISC",
+  "dependencies": {
+    "@auth0/auth0-react": "^2.4.0"
+  }
+}
