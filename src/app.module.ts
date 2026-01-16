@@ -22,10 +22,6 @@ import { UsersModule } from './users/users.module';
       useFactory:(ConfigService:ConfigService) => ({
         type:'postgres',
         host:ConfigService.get<string>('DB_URI'),
-        // port:ConfigService.get<number>('DB_PORT'),
-        // username:ConfigService.get<string>('DB_USERNAME'),
-        // password:ConfigService.get<string>('DB_PASSWORD'),
-        // database:ConfigService.get<string>('DB_NAME'),
         autoLoadEntities:true,
         synchronize:true,
       }),
