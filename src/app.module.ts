@@ -23,7 +23,10 @@ import { MailModule } from './mailer/mail.module';
       useFactory:(ConfigService:ConfigService) => ({
         type:'postgres',
         host:ConfigService.get<string>('DB_URI'),
+<<<<<<< HEAD
        
+=======
+>>>>>>> main
         autoLoadEntities:true,
         synchronize:true,
       }),

@@ -9,7 +9,11 @@ import { ValidationPipe } from '@nestjs/common';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
-  app.enableCors();
+  app.enableCors({
+    origin:'tourstotuscany-frontend.vercel.app',
+    methods:'GET,HEAD,PUT,PATCH,POST,DELETE',
+    credentials:true,
+  });
   app.useGlobalPipes(new ValidationPipe({ whitelist: true }));
 
   // const jwtService = app.get(JwtService);
