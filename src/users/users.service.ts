@@ -5,13 +5,17 @@ import { InjectRepository } from '@nestjs/typeorm';
 import * as bcrypt from 'bcrypt';
 import { User } from './entities/user.entity';
 import { DataSource, Repository } from 'typeorm';
-
+import { Jwt } from 'jsonwebtoken';
+import { MailerService } from '@nestjs-modules/mailer';
+import { JwtService } from '@nestjs/jwt';
 @Injectable()
 export class UsersService {
   constructor(
     @InjectRepository(User)
     private readonly userRepository: Repository<User>,
     private readonly dataSource: DataSource,
+    private readonly mailerService:MailerService,
+    private readonly jwtService:JwtService,
   ) {}
  async createFromForm(fullName: string, email: string, password: string) {
     try{
@@ -77,7 +81,40 @@ async login(email: string, password: string) {
     throw error;
   }
 }
+async forgotPassword(email: string) {
+    try {
+      const user = await this.dataSource
+        .getRepository(User)
+        .createQueryBuilder('user')
+        .where('user.email = :email', { email })
+        .getOne();
 
+      if (!user) {
+        throw new HttpException('User with this email does not exist', HttpStatus.NOT_FOUND);
+      }
+
+      const token = this.jwtService.sign({ email: user.email }, { expiresIn: '24h' });
+
+      const resetLink = `https://tourstotuscany-frontend.vercel.app/reset-password?token=${token}`;
+
+      
+      await this.mailerService.sendMail({
+        to: email,
+        subject: 'Forgot Password | TechMailer',
+        template: './templates/forgot-password', 
+        context: {
+          resetLink,
+          email,
+        },
+      });
+
+      return { message: 'Reset link sent to your email' };
+
+    } catch (error) {
+      if (error instanceof HttpException) throw error;
+      throw new HttpException('Something went wrong', HttpStatus.BAD_REQUEST);
+    }
+  }
 
 }
  // try {
@@ -95,3 +132,4 @@ async login(email: string, password: string) {
   // } catch (error) {
   //   throw new HttpException('Failed to login', HttpStatus.BAD_REQUEST);
   // }
+

@@ -34,5 +34,8 @@ login(
   @Param('password')password:string
   ) {return this.usersService.updatePassword(id,password);}
   
-
+@Post('forgot-password')
+  async forgotPassword(@Body('email') email: string) {
+    return this.usersService.forgotPassword(email);
+  }
 }

@@ -9,6 +9,7 @@ import { MainGalleryModule } from './main_gallery/main_gallery.module';
 import { TestimonialsModule } from './testimonials/testimonials.module';
 import { GalleryModule } from './gallery/gallery.module';
 import { UsersModule } from './users/users.module';
+import { MailModule } from './mailer/mail.module';
 
 @Module({
   imports: [
@@ -22,6 +23,10 @@ import { UsersModule } from './users/users.module';
       useFactory:(ConfigService:ConfigService) => ({
         type:'postgres',
         host:ConfigService.get<string>('DB_URI'),
+<<<<<<< HEAD
+       
+=======
+>>>>>>> main
         autoLoadEntities:true,
         synchronize:true,
       }),
@@ -31,6 +36,7 @@ import { UsersModule } from './users/users.module';
     GalleryModule,
     TestimonialsModule,
     UsersModule,
+    MailModule,
  
   ],
   controllers: [AppController],
