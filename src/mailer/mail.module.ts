@@ -1,8 +1,6 @@
 import { Module } from '@nestjs/common';
-import { MailService } from './mail.service'; // Змінив назву сервісу для чистоти
 import { MailerModule } from '@nestjs-modules/mailer';
 import { HandlebarsAdapter } from '@nestjs-modules/mailer/dist/adapters/handlebars.adapter';
-import { MailController } from './mail.controller';
 import { ConfigService, ConfigModule } from '@nestjs/config';
 import { join } from 'path';
 
@@ -35,8 +33,6 @@ import { join } from 'path';
       }),
     }),
   ],
-  controllers: [MailController],
-  providers: [MailService],
-  exports: [MailService],
+
 })
 export class MailModule {} 
