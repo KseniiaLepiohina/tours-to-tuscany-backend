@@ -10,6 +10,7 @@ import { TestimonialsModule } from './testimonials/testimonials.module';
 import { GalleryModule } from './gallery/gallery.module';
 import { UsersModule } from './users/users.module';
 import { MailModule } from './mailer/mail.module';
+import { DatabaseModule } from './database/database.module';
 
 @Module({
   imports: [
@@ -17,27 +18,13 @@ import { MailModule } from './mailer/mail.module';
       isGlobal:true,
       envFilePath:'.env',
     }),
-    TypeOrmModule.forRootAsync({
-      imports:[ConfigModule],
-      inject:[ConfigService],
-      useFactory:(ConfigService:ConfigService) => ({
-        type:'postgres',
-        host:ConfigService.get<string>('DB_URI'),
-<<<<<<< HEAD
-       
-=======
->>>>>>> main
-        autoLoadEntities:true,
-        synchronize:true,
-      }),
-    }),
     TourModule,
     MainGalleryModule,
     GalleryModule,
     TestimonialsModule,
     UsersModule,
     MailModule,
- 
+    DatabaseModule
   ],
   controllers: [AppController],
   providers: [AppService],
