@@ -4,12 +4,8 @@
   "sourceRoot": "src",
   "compilerOptions": {
     "deleteOutDir": true,
-<<<<<<< HEAD
     "assets": [
       "mail/templates/**/*"
     ]
-=======
-    "outDir":"dist"
->>>>>>> main
   }
 }
