@@ -18,6 +18,10 @@ import { DatabaseModule } from './database/database.module';
       isGlobal:true,
       envFilePath:'.env',
     }),
+    TypeOrmModule.forRootAsync({
+      imports:[ConfigModule],
+      inject:[ConfigService],
+    }),
     TourModule,
     MainGalleryModule,
     GalleryModule,
