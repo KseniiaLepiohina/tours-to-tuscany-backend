@@ -4,7 +4,6 @@ import { TourController } from './tour.controller';
 import { MongooseModule } from '@nestjs/mongoose';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { Tour } from './entity/tour.entity';
-// import { Tour, TourSchema } from './shema/tour.shema';
 
 @Module({
   imports: [
