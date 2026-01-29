@@ -1,6 +1,6 @@
 import { Body, Controller, Get, Param, Query } from '@nestjs/common';
 import { TourService } from './tour.service';
-import { ApiOperation, ApiResponse } from '@nestjs/swagger';
+import { ApiOperation, ApiQuery, ApiResponse } from '@nestjs/swagger';
 
 @Controller('tour')
 export class TourController {
@@ -22,8 +22,16 @@ export class TourController {
     status:500,
     description:'Internal server error'
   })
-  async findAll() {
-    return this.tourService.findAllTours();
+  @ApiQuery({ name: 'title', required: false, type: String })
+@ApiQuery({ name: 'group_size', required: false, type: Number })
+@ApiQuery({ name: 'transport', required: false, type: String })
+  async findAll(
+    @Query("title") title:string,
+     @Query("group_size" )group_size:number,
+    @Query("transport" )transport:string
+
+  ) {
+    return this.tourService.findAllTours(title,group_size,transport);
   }
 
   @Get('/:id')
