@@ -11,15 +11,33 @@ export class TourService {
     private readonly dataSource: DataSource,
   ) {}
 
-  async findAllTours() {
+  async findAllTours(title:string, group_size:number, transport:string) {
     try {
-      const tours = await this.dataSource
-        .getRepository(Tour)
-        .createQueryBuilder("tour")
-        .select()
-        .getMany();
+      // const tours = await this.dataSource
+      //   .getRepository(Tour)
+      //   .createQueryBuilder("tour")
+      //   .select()
+      //   .getMany();
+     
+      // const filters = await this.dataSource
+      // .getRepository(Tour)
+      // .createQueryBuilder("searchByFilters");
+      // const findByTitle = title ? filters.andWhere("tour.title === title") : null;
+      // return tours;
+      const query = this.dataSource
+      .getRepository(Tour)
+      .createQueryBuilder("tour");
 
-      return tours;
+      if(title) {
+        query.andWhere("tour.title ILIKE :title", {title:`${title}`})
+      };
+      if(group_size) {
+        query.andWhere("tour.group_size = :group_size", {group_size:`${group_size}`})
+      };
+if(transport) {
+        query.andWhere("tour.transport ILIKE :transport", {transport:`${transport}`})
+      };
+      return await query.getMany();
     } catch (error) {
       throw new BadRequestException('Tours not found');
     }

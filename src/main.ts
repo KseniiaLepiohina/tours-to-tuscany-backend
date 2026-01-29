@@ -15,12 +15,13 @@ async function bootstrap() {
     const  documentFactory  = () => SwaggerModule.createDocument(app,config);
     SwaggerModule.setup('api', app, documentFactory);
   app.enableCors({
-    origin:'tourstotuscany-frontend.vercel.app',
+    origin:'http://tourstotuscany-frontend.vercel.app',
     methods:'GET,HEAD,PUT,PATCH,POST,DELETE',
     credentials:true,
   });
   app.useGlobalPipes(new ValidationPipe({ whitelist: true }));
-  await app.listen(process.env.PORT || 3000);
+ const port = process.env.PORT || 3000;
+  await app.listen(port, '0.0.0.0');
 
 }
 bootstrap();
