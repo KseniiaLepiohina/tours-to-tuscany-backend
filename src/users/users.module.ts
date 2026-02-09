@@ -3,10 +3,15 @@ import { UsersService } from './users.service';
 import { UsersController } from './users.controller';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { User } from './entities/user.entity';
-import { JwtService } from '@nestjs/jwt';
+import { JwtModule, JwtService } from '@nestjs/jwt';
 
 @Module({
-  imports:[TypeOrmModule.forFeature([User])],
+  imports:[
+    JwtModule.register({
+      secret: process.env.JWT_SECRET || 'super-secret', // Додай це в .env
+      signOptions: { expiresIn: '1d' }, // Токен діятиме 1 добу
+    }),
+    TypeOrmModule.forFeature([User])],
   controllers: [UsersController],
   providers: [UsersService,JwtService],
 })

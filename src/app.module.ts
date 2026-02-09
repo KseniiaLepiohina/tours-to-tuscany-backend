@@ -11,6 +11,8 @@ import { GalleryModule } from './gallery/gallery.module';
 import { UsersModule } from './users/users.module';
 import { MailModule } from './mailer/mail.module';
 import { DatabaseModule } from './database/database.module';
+import { GoogleModule } from './google/google.module';
+import { ContactUsModule } from './contact-us/contact-us.module';
 
 @Module({
   imports: [
@@ -35,7 +37,9 @@ import { DatabaseModule } from './database/database.module';
     TestimonialsModule,
     UsersModule,
     MailModule,
-    DatabaseModule
+    DatabaseModule,
+    GoogleModule,
+    ContactUsModule
   ],
   controllers: [AppController],
   providers: [AppService],

@@ -1,0 +1,8 @@
+services:
+  api:
+    build:
+      context: .
+      args:
+        - NODE_OPTIONS=--max-old-space-size=2048
+    environment:
+      - NODE_OPTIONS=--max-old-space-size=2048

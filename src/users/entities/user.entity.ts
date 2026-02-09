@@ -10,13 +10,5 @@ export class User {
   email:string;
   @Column({type:'varchar', length:255})
   password:string;
-// @Column({type:'varchar', length:255})
-// reset_token:string;
-// @Column({type:'varchar', length:255})
-// reset_expires:string;
-// @Column({type:'varchar'})
-// firebaseUid:string;
-// @Column({type:'varchar'})
-// googleId:string;
 
 }

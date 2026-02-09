@@ -34,7 +34,7 @@ export class TourService {
       if(group_size) {
         query.andWhere("tour.group_size = :group_size", {group_size:`${group_size}`})
       };
-if(transport) {
+      if(transport) {
         query.andWhere("tour.transport ILIKE :transport", {transport:`${transport}`})
       };
       return await query.getMany();
