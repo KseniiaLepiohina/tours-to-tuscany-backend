@@ -6,21 +6,22 @@ import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
+
   const config = new DocumentBuilder()
     .setTitle('Tours to Tuscany')
     .setDescription('The Tours to Tuscany API description')
     .setVersion('1.0')
     .addTag('Tuscany')
     .build()
-    const  documentFactory  = () => SwaggerModule.createDocument(app,config);
-    SwaggerModule.setup('api', app, documentFactory);
+  const documentFactory = () => SwaggerModule.createDocument(app, config);
+  SwaggerModule.setup('api', app, documentFactory);
   app.enableCors({
-    origin:'http://tourstotuscany-frontend.vercel.app',
-    methods:'GET,HEAD,PUT,PATCH,POST,DELETE',
-    credentials:true,
+    origin: 'https://tourstotuscany-frontend-ii3sq6k7t-kseniia-liepokhinas-projects.vercel.app',
+    methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
+    credentials: true,
   });
   app.useGlobalPipes(new ValidationPipe({ whitelist: true }));
- const port = process.env.PORT || 3000;
+  const port = process.env.PORT || 3000;
   await app.listen(port, '0.0.0.0');
 
 }
