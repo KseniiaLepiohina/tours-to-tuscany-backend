@@ -16,11 +16,8 @@ async function bootstrap() {
   const documentFactory = () => SwaggerModule.createDocument(app, config);
   SwaggerModule.setup('api', app, documentFactory);
 app.enableCors({
-  origin: [
+  origin: 
     'https://tourstotuscany-frontend-ii3sq6k7t-kseniia-liepokhinas-projects.vercel.app',
-    'https://tourstotuscany-frontend.vercel.app', 
-    /\.vercel\.app$/ 
-  ],
   methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
   credentials: true,
 });  app.useGlobalPipes(new ValidationPipe({ whitelist: true }));
