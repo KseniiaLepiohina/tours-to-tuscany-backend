@@ -11,9 +11,9 @@ import { join } from 'path';
       inject: [ConfigService],
       useFactory: (configService: ConfigService) => ({
         transport: {
-          host: 'smtp.gmail.com', // Для Gmail краще вказати явно або через env
+          host: 'smtp.gmail.com', 
           port: 587,
-          secure: false, // true для 465, false для інших портів
+          secure: false, 
           auth: {
             user: configService.get<string>('EMAIL_SERVER_EMAIL'),
             pass: configService.get<string>('EMAIL_SERVER_PASS'),
@@ -23,7 +23,6 @@ import { join } from 'path';
           from: '"No Reply" <techmailer2026@gmail.com>',
         },
         template: {
-          // __dirname вказує на папку dist після компіляції
           dir: join(process.cwd(), 'src/mail/templates'), 
           adapter: new HandlebarsAdapter(),
           options: {
