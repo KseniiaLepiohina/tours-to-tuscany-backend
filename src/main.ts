@@ -31,6 +31,7 @@ app.enableCors({
     const allowedOrigins = [
       'http://localhost:3000',
       'https://tourstotuscany-frontend.vercel.app',
+      'https://tourstotuscany-frontend-ii3sq6k7t-kseniia-liepokhinas-projects.vercel.app'
     ];
     if (!origin || allowedOrigins.includes(origin) || /\.vercel\.app$/.test(origin)) {
       callback(null, true);
