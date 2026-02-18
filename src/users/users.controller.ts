@@ -2,13 +2,14 @@ import { Controller, Get, Post, Body, Patch, Param, Delete, Redirect, Query } fr
 import { UsersService } from './users.service';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
+import { ApiBearerAuth } from '@nestjs/swagger';
 
 @Controller('users')
 export class UsersController {
   constructor(
     private readonly usersService: UsersService
   ) {}
-
+@ApiBearerAuth('access_token')
   @Post('newUser/:fullName/:email/:password')
   create(
     @Param('fullName')fullName:string,
@@ -17,7 +18,7 @@ export class UsersController {
   ) {
     return this.usersService.createFromForm(fullName,email,password);
   }
-
+@ApiBearerAuth('access_token')
 @Post('login')
 login(
   @Param('email') email:string,

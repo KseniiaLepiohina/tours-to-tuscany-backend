@@ -12,15 +12,37 @@ async function bootstrap() {
     .setDescription('The Tours to Tuscany API description')
     .setVersion('1.0')
     .addTag('Tuscany')
+    .addBasicAuth(
+      {
+        type:'http',
+        scheme:'bearer',
+        bearerFormat:'JWT',
+        name:'JWT',
+        description:'Enter JWT token',
+        in:'header'
+      },
+      'access_token'
+    )
     .build()
   const documentFactory = () => SwaggerModule.createDocument(app, config);
   SwaggerModule.setup('api', app, documentFactory);
 app.enableCors({
-  origin: 
-    'https://tourstotuscany-frontend-ii3sq6k7t-kseniia-liepokhinas-projects.vercel.app',
-  methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
+  origin: (origin, callback) => {
+    const allowedOrigins = [
+      'http://localhost:3000',
+      'https://tourstotuscany-frontend.vercel.app',
+    ];
+    if (!origin || allowedOrigins.includes(origin) || /\.vercel\.app$/.test(origin)) {
+      callback(null, true);
+    } else {
+      callback(new Error('Not allowed by CORS'));
+    }
+  },
+  methods: 'GET,HEAD,PUT,PATCH,POST,DELETE,OPTIONS',
   credentials: true,
-});  app.useGlobalPipes(new ValidationPipe({ whitelist: true }));
+  allowedHeaders: 'Content-Type, Accept, Authorization',
+});
+app.useGlobalPipes(new ValidationPipe({ whitelist: true }));
   const port = process.env.PORT || 3000;
   await app.listen(port, '0.0.0.0');
 

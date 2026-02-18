@@ -1,6 +1,4 @@
 import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
-import { CreateUserDto } from './dto/create-user.dto';
-import { UpdateUserDto } from './dto/update-user.dto';
 import { InjectRepository } from '@nestjs/typeorm';
 import * as bcrypt from 'bcrypt';
 import { User } from './entities/user.entity';
@@ -10,7 +8,6 @@ import { MailerService } from '@nestjs-modules/mailer';
 import { JwtService } from '@nestjs/jwt';
 import { google } from 'googleapis';
 import { ConfigService } from '@nestjs/config';
-import { OAuth2Client } from 'google-auth-library';
 
 @Injectable()
 export class UsersService {
@@ -82,7 +79,6 @@ export class UsersService {
         throw new HttpException('Invalid credentials', HttpStatus.UNAUTHORIZED);
       }
 
-      // Return user info without password, or a JWT token
       const { password: _, ...result } = user;
       return result;
     } catch (error) {
@@ -104,7 +100,6 @@ export class UsersService {
       const token = this.jwtService.sign({ email: user.email }, { expiresIn: '24h' });
 
       const resetLink = `https://tourstotuscany-frontend.vercel.app/reset-password?token=${token}`;
-
 
       await this.mailerService.sendMail({
         to: email,
