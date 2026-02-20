@@ -17,7 +17,7 @@ async function bootstrap() {
   app.enableCors({
   origin: (origin, callback) => {
     const allowed = [
-      'https://tourstotuscany-frontend.vercel.app',
+      'http://localhost:3000'
     ];
     if (!origin || allowed.includes(origin) || origin.endsWith('.vercel.app')) {
       callback(null, true);
