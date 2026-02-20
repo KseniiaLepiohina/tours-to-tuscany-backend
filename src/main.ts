@@ -15,12 +15,22 @@ async function bootstrap() {
     const  documentFactory  = () => SwaggerModule.createDocument(app,config);
     SwaggerModule.setup('api', app, documentFactory);
   app.enableCors({
-    origin:'http://tourstotuscany-frontend.vercel.app',
-    methods:'GET,HEAD,PUT,PATCH,POST,DELETE',
-    credentials:true,
-  });
+  origin: (origin, callback) => {
+    const allowed = [
+      'https://tourstotuscany-frontend.vercel.app',
+    ];
+    if (!origin || allowed.includes(origin) || origin.endsWith('.vercel.app')) {
+      callback(null, true);
+    } else {
+      callback(new Error('Not allowed by CORS'));
+    }
+  },
+  methods: 'GET,HEAD,PUT,PATCH,POST,DELETE,OPTIONS',
+  credentials: true,
+  allowedHeaders: 'Content-Type, Accept, Authorization',
+});
   app.useGlobalPipes(new ValidationPipe({ whitelist: true }));
- const port = process.env.PORT || 3000;
+ const port = process.env.PORT || 5000;
   await app.listen(port, '0.0.0.0');
 
 }
