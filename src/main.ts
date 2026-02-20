@@ -16,8 +16,9 @@ async function bootstrap() {
     SwaggerModule.setup('api', app, documentFactory);
   app.enableCors({
   origin: (origin, callback) => {
+    console.log("CORS запит від:", origin); 
     const allowed = [
-      'http://localhost:3000'
+      'http://localhost:3000','https://tourstotuscany-frontend.vercel.app'
     ];
     if (!origin || allowed.includes(origin) || origin.endsWith('.vercel.app')) {
       callback(null, true);
