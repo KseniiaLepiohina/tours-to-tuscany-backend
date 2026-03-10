@@ -16,8 +16,7 @@ async function bootstrap() {
   SwaggerModule.setup('api', app, documentFactory);
 
   app.enableCors({
-    origin: (origin, callback) => {
-      console.log("CORS запит від:", origin);
+    origin: (origin, callback) => 
       const allowed = [
         'http://localhost:3000'
       ];
