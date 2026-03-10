@@ -7,6 +7,9 @@ import { DataSource, Repository } from 'typeorm';
 
 @Injectable()
 export class MainGalleryService {
+  findMainImage(id: number) {
+    throw new Error('Method not implemented.');
+  }
 
   constructor(
     @InjectRepository(MainGallery)
@@ -50,16 +53,14 @@ async findMainImg(id: number) {
       .select([
         'main_gallery.image_main_url'
       ])
-      .where('main_gallery.id = :id', { id })
+      .where('main_gallery.tour_id = :id', { id })
       .getOne();
       
     console.log('Found:', mainImg);
 
     if (!mainImg) {
-     
       throw new BadRequestException(`Main image with ID ${id} not found.`);
     }
-    
     return mainImg; 
 
   } catch (error) {

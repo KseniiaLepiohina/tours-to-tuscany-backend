@@ -12,26 +12,29 @@ async function bootstrap() {
     .setVersion('1.0')
     .addTag('Tuscany')
     .build()
-    const  documentFactory  = () => SwaggerModule.createDocument(app,config);
-    SwaggerModule.setup('api', app, documentFactory);
+  const documentFactory = () => SwaggerModule.createDocument(app, config);
+  SwaggerModule.setup('api', app, documentFactory);
+
   app.enableCors({
-  origin: (origin, callback) => {
-    console.log("CORS запит від:", origin); 
-    const allowed = [
-      'http://localhost:3000','https://tourstotuscany-frontend.vercel.app'
-    ];
-    if (!origin || allowed.includes(origin) || origin.endsWith('.vercel.app')) {
-      callback(null, true);
-    } else {
-      callback(new Error('Not allowed by CORS'));
-    }
-  },
-  methods: 'GET,HEAD,PUT,PATCH,POST,DELETE,OPTIONS',
-  credentials: true,
-  allowedHeaders: 'Content-Type, Accept, Authorization',
-});
+    origin: (origin, callback) => {
+      console.log("CORS запит від:", origin);
+      const allowed = [
+        'http://localhost:3000'
+      ];
+      if (!origin || allowed.includes(origin) || origin.endsWith('.vercel.app')) {
+        callback(null, true);
+      } else {
+        callback(new Error('Not allowed by CORS'));
+      }
+    },
+    methods: 'GET,HEAD,PUT,PATCH,POST,DELETE,OPTIONS',
+    credentials: true,
+    allowedHeaders: 'Content-Type, Accept, Authorization',
+  });
+
   app.useGlobalPipes(new ValidationPipe({ whitelist: true }));
- const port = process.env.PORT || 5000;
+
+  const port = process.env.PORT || 5000;
   await app.listen(port, '0.0.0.0');
 
 }
