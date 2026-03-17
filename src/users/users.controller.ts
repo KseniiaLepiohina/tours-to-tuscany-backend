@@ -11,14 +11,12 @@ export class UsersController {
   
   ) {}
 
-  @Post('newUser/:fullName/:email/:password')
-  create(
-    @Param('fullName')fullName:string,
-    @Param('email')email:string,
-    @Param('password')password:string
-  ) {
-    return this.usersService.createFromForm(fullName,email,password);
-  }
+ @Post('newUser')
+create(
+  @Body() createUserDto: CreateUserDto
+) {
+  return this.usersService.createFromForm(createUserDto);
+}
 
 @Post('login')
 login(

@@ -4,6 +4,8 @@ import { UpdateGalleryDto } from './dto/update-gallery.dto';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Gallery } from './entities/gallery.entity';
 import { DataSource, Repository } from 'typeorm';
+import { response } from 'express';
+import { Tour } from 'src/tours/entity/tour.entity';
 
 @Injectable()
 export class GalleryService {
@@ -12,31 +14,44 @@ export class GalleryService {
       @InjectRepository(Gallery)
   private readonly galleryRepository:Repository<Gallery>,
   private readonly dataSource: DataSource,
+
   ) {}
+  private  readonly API = process.env.UNSPLASH_API
+  private  readonly ACCESSS_KEY=process.env.UNSPLASH_ACCESS_KEY
+  private  readonly SECRET_KEY=process.env.UNSPLASH_SECRET_KEY
 
-
-async findAll(id: number) {
+async findAll(location:string) {
   try {
-    const gallery = await this.dataSource
-      .getRepository(Gallery)
-      .createQueryBuilder('g')
-      .select([
-        'g.id',
-        'g.image1_url',
-        'g.image2_url',
-        'g.image3_url',
-        'g.image4_url',
-      ])
-      .where('g.tour_id = :id', { id }) 
+    const tour = await this.dataSource
+      .getRepository(Tour)
+      .createQueryBuilder('t')
+      .select(['t.location'])
+      .where('t.location = :location',{location})
       .getOne();
 
-    console.log('✅ Query result:', gallery);
-    if (!gallery) {
-      throw new BadRequestException('No images found for this tour id');
+    if (!tour || !tour.location) {
+      throw new NotFoundException('Локацію для цього туру не знайдено');
     }
-    return gallery;
+
+    const locationName = tour.location;
+
+    const response = await fetch(
+      `${this.API}/search/photos?query=${encodeURIComponent(locationName)}&per_page=4&client_id=${this.ACCESSS_KEY}`
+    );
+
+    if (!response.ok) {
+      throw new Error(`Unsplash API error: ${response.statusText}`);
+    }
+
+    const galleryData = await response.json();
+
+    return {
+      location: locationName,
+      photos: galleryData.results 
+    };
   } catch (error) {
-    throw new BadRequestException('Failed to get all images');
+    console.error(error);
+    throw new BadRequestException('Не вдалося отримати фото з Unsplash');
   }
 }
 
