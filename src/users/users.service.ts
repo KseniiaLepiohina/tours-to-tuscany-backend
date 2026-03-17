@@ -17,23 +17,36 @@ export class UsersService {
     private readonly mailerService:MailerService,
     private readonly jwtService:JwtService,
   ) {}
- async createFromForm(fullName: string, email: string, password: string) {
-    try{
-      const saltRounds = 10;
-      const hashedPassword = await bcrypt.hash(password,saltRounds)
-      const newUser = await this.dataSource
+  
+async createFromForm(createUserDto: CreateUserDto) {
+  const { fullName, email, password } = createUserDto; // Деструктуризація
+  
+  try {
+    const saltRounds = 10;
+    // Тепер password - це рядок, і bcrypt спрацює правильно
+    const hashedPassword = await bcrypt.hash(password, saltRounds);
+
+    const result = await this.dataSource
       .createQueryBuilder()
       .insert()
       .into(User)
-      .values({ fullName, email, password: hashedPassword })
+      .values({ 
+        fullName, 
+        email, 
+        password: hashedPassword 
+      })
       .execute();
-    return newUser;
 
-    }catch(error) {
-      console.log(error);  
-throw new HttpException('Failed with creating new user', HttpStatus.BAD_REQUEST);
+    return result;
+  } catch (error) {
+    console.error(error);
+    // Якщо імейл вже існує, база видасть помилку. Варто її обробити:
+    if (error.code === '23505') { // Код для PostgreSQL "Unique Violation"
+      throw new HttpException('User with this email already exists', HttpStatus.CONFLICT);
     }
+    throw new HttpException('Failed with creating new user', HttpStatus.BAD_REQUEST);
   }
+}
 
 async updatePassword(id: number, password: string) {
   try {

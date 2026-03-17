@@ -12,9 +12,9 @@ export class MainGalleryController {
   findAll(@Param('id') id: number) {
     return this.mainGalleryService.findAllImagesById(id);
   }
-  @Get('main_img/:id')
+ @Get('main_img/:id')
 async getMainImage(@Param('id', ParseIntPipe) id: number) { 
-  return this.mainGalleryService.findMainImage(id);
+  return this.mainGalleryService.findMainImg(id); 
 }
 
 }

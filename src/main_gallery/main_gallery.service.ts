@@ -1,6 +1,4 @@
 import { BadRequestException, Injectable, InternalServerErrorException, NotFoundException } from '@nestjs/common';
-import { CreateMainGalleryDto } from './dto/create-main_gallery.dto';
-import { UpdateMainGalleryDto } from './dto/update-main_gallery.dto';
 import { InjectRepository } from '@nestjs/typeorm';
 import { MainGallery } from './entities/main_gallery.entity';
 import { DataSource, Repository } from 'typeorm';
@@ -37,7 +35,7 @@ export class MainGalleryService {
         throw new BadRequestException('No images found for this tour id');
       }
 
-      return main_gallery; // тут вже нормальний об’єкт, не raw
+      return main_gallery; 
     } catch (error) {
       throw new BadRequestException('Failed to get image by id');
     }
@@ -46,30 +44,20 @@ export class MainGalleryService {
 
 async findMainImg(id: number) {
   try {
-    console.log('Looking for main image with id:', id);
-    
-    const mainImg = await this.mainGalleryRepository
-      .createQueryBuilder('main_gallery')
-      .select([
-        'main_gallery.image_main_url'
-      ])
-      .where('main_gallery.tour_id = :id', { id })
-      .getOne();
-      
-    console.log('Found:', mainImg);
+    const mainImg = await this.mainGalleryRepository.findOne({
+      where: { tour_id: id } as any, 
+      select: ['image_main_url']
+    });
 
     if (!mainImg) {
-      throw new BadRequestException(`Main image with ID ${id} not found.`);
+      console.log(`Image for tour_id ${id} not found`);
+      return { image_main_url: null }; 
     }
-    return mainImg; 
 
+    return mainImg;
   } catch (error) {
-  
-    if (error instanceof BadRequestException) {
-      throw error;
-    }
-    console.error(error);
-    throw new InternalServerErrorException('Failed to get image by id due to a database or server error.');
+    console.error('Error in findMainImg:', error);
+    throw new InternalServerErrorException('Database query failed');
   }
 }
 

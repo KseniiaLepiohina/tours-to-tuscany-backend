@@ -12,12 +12,17 @@ import { UsersModule } from './users/users.module';
 import { MailModule } from './mailer/mail.module';
 import { DatabaseModule } from './database/database.module';
 import { GoogleModule } from './google/google.module';
+import { JwtModule } from '@nestjs/jwt';
 
 @Module({
   imports: [
     ConfigModule.forRoot({
       isGlobal:true,
       envFilePath:'.env',
+    }),
+    JwtModule.register({
+      secret:process.env.JWT_SECRET,
+      signOptions:{expiresIn:'1d'}
     }),
     TypeOrmModule.forRootAsync({
       imports:[ConfigModule],

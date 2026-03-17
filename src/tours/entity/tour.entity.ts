@@ -37,6 +37,8 @@ export class Tour {
 
   @Column({type:'varchar',length:100})
   fees: string;
+  @Column({type:'varchar', length:255})
+  location:string;
 
   @Column({ type: 'numeric', precision: 10, scale: 2, nullable: true })
   child_price: number;
@@ -49,4 +51,5 @@ export class Tour {
   main_gallery: any;
   gallery: any;
   booking: any;
+  
 }
