@@ -7,9 +7,11 @@ import { UpdateGalleryDto } from './dto/update-gallery.dto';
 export class GalleryController {
   constructor(private readonly galleryService: GalleryService) {}
 
-  @Get('search')
-  findAll(@Param('location') location:string) {
-    return this.galleryService.findAll(location);
+  @Get('search/:location')
+  findAll(@Param('location') locationQuery: string) {
+    console.log(locationQuery);
+    const decodedLocation = decodeURIComponent(locationQuery); 
+  return this.galleryService.findAll(decodedLocation);
   }
 
 }

@@ -9,31 +9,39 @@ import { Tour } from 'src/tours/entity/tour.entity';
 
 @Injectable()
 export class GalleryService {
- 
+
   constructor(
-      @InjectRepository(Gallery)
-  private readonly galleryRepository:Repository<Gallery>,
-  private readonly dataSource: DataSource,
+    @InjectRepository(Gallery)
+    private readonly galleryRepository: Repository<Gallery>,
+    private readonly dataSource: DataSource,
 
-  ) {}
-  private  readonly API = process.env.UNSPLASH_API
-  private  readonly ACCESSS_KEY=process.env.UNSPLASH_ACCESS_KEY
-  private  readonly SECRET_KEY=process.env.UNSPLASH_SECRET_KEY
+  ) { }
+  private readonly API = process.env.UNSPLASH_API
+  private readonly ACCESSS_KEY = process.env.UNSPLASH_ACCESS_KEY
+  private readonly SECRET_KEY = process.env.UNSPLASH_SECRET_KEY
 
-async findAll(location:string) {
+  
+    async findAll(locationQuery: string) {
   try {
-    const tour = await this.dataSource
-      .getRepository(Tour)
-      .createQueryBuilder('t')
-      .select(['t.location'])
-      .where('t.location = :location',{location})
-      .getOne();
+    const locations = [
+      { id: 1, locationName: "Montepulciano" },
+      { id: 2, locationName: "Lucca" },
+      { id: 3, locationName: "Cinque Terre" },
+      { id: 4, locationName: "Siena" },
+      { id: 5, locationName: "Lucca Hills" },
+      { id: 6, locationName: "Gardaland" }
+    ];
 
-    if (!tour || !tour.location) {
-      throw new NotFoundException('Локацію для цього туру не знайдено');
+    const foundLocation = locations.find(
+      (l) => l.locationName.toLowerCase() === locationQuery.toLowerCase()
+    );
+
+    if (!foundLocation) {
+      console.error(`Локацію не знайдено в списку: ${locationQuery}`);
+      throw new NotFoundException(`Локацію "${locationQuery}" не знайдено`);
     }
 
-    const locationName = tour.location;
+    const locationName = foundLocation.locationName;
 
     const response = await fetch(
       `${this.API}/search/photos?query=${encodeURIComponent(locationName)}&per_page=4&client_id=${this.ACCESSS_KEY}`
@@ -47,13 +55,13 @@ async findAll(location:string) {
 
     return {
       location: locationName,
-      photos: galleryData.results 
+      photos: galleryData.results
     };
+
   } catch (error) {
-    console.error(error);
-    throw new BadRequestException('Не вдалося отримати фото з Unsplash');
+    if (error instanceof NotFoundException) throw error;
+    throw new BadRequestException('Помилка при отриманні галереї');
   }
 }
+  }
 
-
-}
