@@ -44,10 +44,8 @@ export class MainGalleryService {
 
 async findMainImg(id: number) {
   try {
-    // Важливо: перевірте, як це поле називається у файлі main_gallery.entity.ts
-    // Якщо там @Column() tour_id: number, то пишемо так:
     const mainImg = await this.mainGalleryRepository.findOne({
-      where: { tour_id: id } as any, // Примусово шукаємо по tour_id
+      where: { tour_id: id } as any, 
       select: ['image_main_url']
     });
 

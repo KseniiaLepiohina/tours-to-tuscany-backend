@@ -8,8 +8,10 @@ export class GalleryController {
   constructor(private readonly galleryService: GalleryService) {}
 
   @Get('search')
-  findAll(@Param('location') location:string) {
-    return this.galleryService.findAll(location);
+  findAll(@Param('location') location: string) {
+    console.log(location);
+    const decodedLocation = decodeURIComponent(location); 
+  return this.galleryService.findAll(decodedLocation);
   }
 
 }
