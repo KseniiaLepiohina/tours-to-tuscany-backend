@@ -5,7 +5,8 @@ import { UpdateGalleryDto } from './dto/update-gallery.dto';
 
 @Controller('gallery')
 export class GalleryController {
-  constructor(private readonly galleryService: GalleryService) {}
+  constructor(private readonly galleryService: GalleryService) 
+   {}
 
   @Get('search/:location')
   findAll(@Param('location') locationQuery: string) {
