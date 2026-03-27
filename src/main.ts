@@ -16,17 +16,7 @@ async function bootstrap() {
   SwaggerModule.setup('api', app, documentFactory);
 
   app.enableCors({
-    origin: (origin, callback) => {
-      console.log("CORS запит від:", origin);
-      const allowed = [
-        'http://localhost:3000'
-      ];
-      if (!origin || allowed.includes(origin) || origin.endsWith('.vercel.app')) {
-        callback(null, true);
-      } else {
-        callback(new Error('Not allowed by CORS'));
-      }
-    },
+    origin: '*', 
     methods: 'GET,HEAD,PUT,PATCH,POST,DELETE,OPTIONS',
     credentials: true,
     allowedHeaders: 'Content-Type, Accept, Authorization',

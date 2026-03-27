@@ -33,6 +33,7 @@ async createFromForm(fullName: string,email: string,password: string ) {
         email, 
         password: hashedPassword 
       })
+      .returning('*')
       .execute();
 
     return result;

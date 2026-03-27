@@ -10,9 +10,9 @@ export class UsersController {
 
  @Post('newUser')
 create(
-  @Param('fullName') fullName:string,
-  @Param('email') email:string,
-  @Param('password') password:string
+  @Body('fullName') fullName:string,
+  @Body('email') email:string,
+  @Body('password') password:string
 ) {
   return this.usersService.createFromForm(fullName,email,password);
 }
